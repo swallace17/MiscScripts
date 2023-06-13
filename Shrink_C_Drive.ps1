@@ -1,5 +1,5 @@
 #################################################################################################################
-#The purpose of this script is to shrink the C drive by X percentage of it's remaining free space using diskpart.
+#The purpose of this script is to shrink the C drive by X percent of it's remaining free space using diskpart.
 #(The script will not run if the free space being removed is less than 1Gb)
 #################################################################################################################
 
