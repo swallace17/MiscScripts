@@ -36,14 +36,14 @@ shrink desired=$desiredShrinkSize
 $diskpartCommands | Out-File -FilePath $scriptFile -Encoding ASCII
 
 # Run diskpart with the script file
-Start-Process -FilePath "diskpart.exe" -ArgumentList "/s `"$scriptFile`"" -NoNewWindow -Wait
+Start-Process -FilePath "diskpart.exe" -ArgumentList "/s `"$scriptFile`"" -WorkingDirectory $env:TEMP -WindowStyle Hidden -Wait
 
 # Clean up the temporary script file
 Remove-Item -Path $scriptFile -Force
 
 # Calculate the amount by which the C drive was reduced
-$reductionAmount = $desiredShrinkSize / 1024 #Convert shrink size to GB
-Write-Host "Shrink completed successfully. C drive reduced by $reductionAmount GB"
+$reductionAmount = [math]::Round(($desiredShrinkSize / 1024),0) #Convert shrink size to GB
+Write-Host "Shrink completed successfully. C drive reduced by ~$reductionAmount GB"
 
 # Exit the script without error
 exit 0
