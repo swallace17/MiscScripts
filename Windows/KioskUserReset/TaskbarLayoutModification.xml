@@ -9,6 +9,7 @@
   <CustomTaskbarLayoutCollection PinListPlacement="Replace">
     <defaultlayout:TaskbarLayout>
       <taskbar:TaskbarPinList>
+        <taskbar:DesktopApp DesktopApplicationID="Microsoft.Windows.Explorer" />
         <taskbar:DesktopApp DesktopApplicationID="MSEdge" />
       </taskbar:TaskbarPinList>
     </defaultlayout:TaskbarLayout>
