@@ -9,10 +9,6 @@
   <CustomTaskbarLayoutCollection PinListPlacement="Replace">
     <defaultlayout:TaskbarLayout>
       <taskbar:TaskbarPinList>
-        <!-- Google Chrome (via .lnk) -->
-        <taskbar:DesktopApp DesktopApplicationLinkPath="%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\Google Chrome.lnk" />
-
-        <!-- Microsoft Edge -->
         <taskbar:DesktopApp DesktopApplicationID="MSEdge" />
       </taskbar:TaskbarPinList>
     </defaultlayout:TaskbarLayout>
