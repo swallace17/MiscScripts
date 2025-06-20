@@ -1,0 +1,26 @@
+# ===============================
+# Dynamic Hostname Renamer Script
+# Format: PREFIX-SERIAL
+# ===============================
+
+# Set your desired prefix here
+$Prefix = "ACME"  # <-- Change this to your desired hostname prefix
+
+# Get BIOS serial number (trim spaces)
+$Serial = (Get-WmiObject Win32_BIOS).SerialNumber.Trim()
+
+# Combine to form new hostname
+$NewName = "$Prefix-$Serial"
+
+# Get current hostname
+$CurrentName = $env:COMPUTERNAME
+
+# Check if renaming is necessary
+if ($CurrentName -ne $NewName) {
+    Write-Output "Renaming computer from '$CurrentName' to '$NewName'..."
+    
+    # Rename and reboot
+    Rename-Computer -NewName $NewName -Force -Restart
+} else {
+    Write-Output "Hostname is already correct: $NewName"
+}
