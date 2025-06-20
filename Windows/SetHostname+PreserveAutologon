@@ -1,0 +1,50 @@
+# ===============================
+# Dynamic Hostname Renamer Script with AutoLogon Preservation
+# Format: PREFIX-SERIAL
+# ===============================
+
+# === Configuration ===
+$Prefix = "ACME"  # <-- Change this to your desired hostname prefix
+$Username = "username"
+$Password = "Password"
+$AutoLogonPath = "C:\Tools\Autologon64.exe"
+
+# === Get BIOS Serial Number and Build Hostname ===
+$Serial = (Get-WmiObject Win32_BIOS).SerialNumber.Trim()
+$NewName = "$Prefix-$Serial"
+$CurrentName = $env:COMPUTERNAME
+
+# === Check if Hostname Change is Needed ===
+if ($CurrentName -ne $NewName) {
+    Write-Output "Renaming computer from '$CurrentName' to '$NewName'..."
+
+    # === Rename Computer (no reboot yet) ===
+    try {
+        Rename-Computer -NewName $NewName -Force
+        Write-Output "Computer renamed successfully."
+    } catch {
+        Write-Warning "Failed to rename computer: $_"
+        exit 1
+    }
+
+    # === Reapply AutoLogon ===
+    $Domain = "."  # Always use local machine context for AutoLogon
+
+    if (Test-Path $AutoLogonPath) {
+        try {
+            Start-Process -FilePath $AutoLogonPath `
+                -ArgumentList "$Username","$Domain","$Password","/accepteula" `
+                -NoNewWindow -Wait
+            Write-Output "AutoLogon reconfigured for $Username."
+        } catch {
+            Write-Warning "Failed to run AutoLogon.exe: $_"
+        }
+    } else {
+        Write-Warning "AutoLogon.exe not found at $AutoLogonPath"
+    }
+
+    # === Final Reboot ===
+    Restart-Computer -Force
+} else {
+    Write-Output "Hostname is already correct: $NewName"
+}
